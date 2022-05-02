@@ -15,6 +15,8 @@ app.get('/', (req, res) => {
     res.json('Schmidt-Riffer Metalcrafts');
 });
 
+app.use(require('./routes/index.routes'));
+
 app.listen(PORT, () => {
     console.log(`Schdmit-Riffer Metalcrafts is running at http://localhost:${PORT}`);
 });
