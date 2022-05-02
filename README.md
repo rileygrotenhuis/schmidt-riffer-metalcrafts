@@ -1,2 +1,1 @@
-# schmidt-riffer-metalcrafts
-Schmidt-Riffer Metalcrafts Website
+# Schmidt-Riffer Metalcrafts
