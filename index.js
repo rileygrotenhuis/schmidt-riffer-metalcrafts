@@ -11,12 +11,14 @@ app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.json('Schmidt-Riffer Metalcrafts');
-});
+const next = require('./next');
 
-app.use(require('./routes/index.routes'));
+const start = async (port) => {
+    await next(app);
 
-app.listen(PORT, () => {
-    console.log(`Schdmit-Riffer Metalcrafts is running at http://localhost:${PORT}`);
-});
+    app.use(require('./src/routes/index.routes'));
+
+    app.listen(port);
+}
+
+start(PORT);
