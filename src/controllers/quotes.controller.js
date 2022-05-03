@@ -43,3 +43,74 @@ module.exports.newQuoteSubmission = async (req, res) => {
         return res.status(400).json(e);
     }
 };
+
+module.exports.readQuoteSubmission = async (req, res) => {
+    try {
+        const prisma = new PrismaClient();
+
+        const updatedQuoteSubmission = await prisma.quote_submissions.update({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            data: {
+                read: true
+            }
+        });
+
+        prisma.$disconnect();
+
+        return res.status(200).json({
+            'data': updatedQuoteSubmission
+        });
+    } catch (e) {
+        return res.status(400).json(e);
+    }
+};
+
+module.exports.unreadQuoteSubmission = async (req, res) => {
+    try {
+        const prisma = new PrismaClient();
+
+        const updatedQuoteSubmission = await prisma.quote_submissions.update({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            data: {
+                read: false
+            }
+        });
+
+        prisma.$disconnect();
+
+        return res.status(200).json({
+            'data': updatedQuoteSubmission
+        });
+    } catch (e) {
+        return res.status(400).json(e);
+    }
+};
+
+module.exports.deleteQuoteSubmission = async (req, res) => {
+    try {
+        const prisma = new PrismaClient();
+
+        await prisma.quote_items.deleteMany({
+            where: {
+                quote_id: parseInt(req.params.id)
+            }
+        });
+
+        await prisma.quote_submissions.delete({
+            where: {
+                id: parseInt(req.params.id)
+            }
+        });
+
+        prisma.$disconnect();
+
+        return res.status(204).json();
+    } catch (e) {
+        console.log(e);
+        return res.status(400).json(e);
+    }
+}
