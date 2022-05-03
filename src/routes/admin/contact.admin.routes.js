@@ -1,108 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { PrismaClient } = require('@prisma/client');
+const contactController = require('../../controllers/contact.controller');
 
-router.get('/contact/messages', async (req, res) => {
-    try {
-        const prisma = new PrismaClient();
-
-        const messages = await prisma.contact_messages.findMany();
-
-        prisma.$disconnect();
-
-        return res.status(200).json({
-            'data': messages
-        });
-    } catch (e) {
-        return res.status(400).json(e);
-    }
-});
-
-router.get('/contact/messages/:id', async (req, res) => {
-    try {
-        const prisma = new PrismaClient();
-
-        const message = await prisma.contact_messages.findFirst({
-            where: {
-                id: {
-                    equals: parseInt(req.params.id)
-                }
-            }
-        });
-
-        prisma.$disconnect();
-
-        return res.status(200).json({
-            'data': message
-        });
-    } catch (e) {
-        return res.status(400).json(e);
-    }
-});
-
-router.put('/contact/messages/:id/read', async (req, res) => {
-    try {
-        const prisma = new PrismaClient();
-
-        const updatedMessage = await prisma.contact_messages.update({
-            where: {
-                id: parseInt(req.params.id)
-            },
-            data: {
-                read: true
-            }
-        });
-
-        prisma.$disconnect();
-
-        return res.status(200).json({
-            'data': updatedMessage
-        });
-    } catch (e) {
-        return res.status(400).json(e);
-    }
-});
-
-router.put('/contact/messages/:id/unread', async (req, res) => {
-    try {
-        const prisma = new PrismaClient();
-
-        const updatedMessage = await prisma.contact_messages.update({
-            where: {
-                id: parseInt(req.params.id)
-            },
-            data: {
-                read: false
-            }
-        });
-
-        prisma.$disconnect();
-
-        return res.status(200).json({
-            'data': updatedMessage
-        });
-    } catch (e) {
-        return res.status(400).json(e);
-    }
-});
-
-router.delete('/contact/messages/:id', async (req, res) => {
-    try {
-        const prisma = new PrismaClient();
-
-        await prisma.contact_messages.delete({
-            where: {
-                id: parseInt(req.params.id)
-            }
-        });
-
-        prisma.$disconnect();
-
-        return res.status(204).json();
-    } catch (e) {
-        return res.status(400).json(e);
-    }
-});
+router.get('/contact/messages', contactController.getAllContactMessages);
+router.get('/contact/messages/:id', contactController.getContactMessage);
+router.put('/contact/messages/:id/read', contactController.readContactMessage);
+router.put('/contact/messages/:id/unread', contactController.unreadContactMessage);
+router.delete('/contact/messages/:id', contactController.deleteContactMessage);
 
 module.exports = router;
