@@ -16,7 +16,7 @@ const next = require('./next');
 const start = async (port) => {
     await next(app);
 
-    app.use(require('./src/routes/index.routes'));
+    app.use('/api', require('./src/routes/index.routes'));
 
     app.listen(port);
 }
