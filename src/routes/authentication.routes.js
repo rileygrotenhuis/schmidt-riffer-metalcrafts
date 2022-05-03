@@ -1,31 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const jwt = require('jsonwebtoken');
+const authenticationController = require('../controllers/authentication.controller');
 
-router.post('/login', async (req, res) => {
-    try {
-        const { username, password } = req.body;
-
-        if (!(username && password)) {
-            return res.status(400).json('Username and password is required');
-        }
-
-        if (username === process.env.USERNAME && password === process.env.PASSWORD) {
-            const token = jwt.sign(
-                {
-                    username: username
-                },
-                process.env.TOKEN_KEY,
-            );
-
-            return res.status(200).json({'token': token});
-        }
-
-        return res.status(400).json('Invalid credentials');
-    } catch (e) {
-        res.json(e);
-    }
-});
+router.post('/login', authenticationController.login);
 
 module.exports = router;
