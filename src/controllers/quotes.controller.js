@@ -113,4 +113,49 @@ module.exports.deleteQuoteSubmission = async (req, res) => {
         console.log(e);
         return res.status(400).json(e);
     }
-}
+};
+
+module.exports.getAllQuoteSubmissions = async (req, res) => {
+    try {
+        const prisma = new PrismaClient();
+
+        const quoteSubmissions = await prisma.quote_submissions.findMany({
+            include: {
+                quote_items: true
+            }
+        });
+
+        prisma.$disconnect();
+
+        return res.status(200).json({
+            'data': quoteSubmissions
+        });
+    } catch (e) {
+        return res.status(400).json(e);
+    }
+};
+
+module.exports.getQuoteSubmission = async (req, res) => {
+    try {
+        const prisma = new PrismaClient();
+
+        const quoteSubmission = await prisma.quote_submissions.findFirst({
+            where: {
+                id: {
+                    equals: parseInt(req.params.id)
+                }
+            },
+            include: {
+                quote_items: true
+            }
+        });
+
+        prisma.$disconnect();
+
+        return res.status(200).json({
+            'data': quoteSubmission
+        });
+    } catch (e) {
+        return res.status(400).json(e);
+    }
+};
