@@ -4,6 +4,7 @@
 	"description": "Schmidt-Riffer Metalcrafts Website",
 	"main": "src/index.js",
 	"scripts": {
+		"build": "cd app && next build",
 		"dev": "nodemon --ignore src/app/ src/index.js",
 		"start": "npm run build && env NODE_ENV=production node src/index.js"
 	},
