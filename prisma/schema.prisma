@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model contact_messages {
+  id           Int       @id @default(autoincrement())
+  first_name   String    @db.VarChar(255)
+  last_name    String    @db.VarChar(255)
+  company      String?   @db.VarChar(255)
+  email        String    @db.VarChar(255)
+  phone_number String    @db.VarChar(255)
+  message      String    @db.VarChar(1000)
+  read         Boolean?  @default(false)
+  sent_at      DateTime? @default(now()) @db.Timestamp(6)
+}
+
+model products {
+  id          Int           @id @default(autoincrement())
+  name        String        @db.VarChar(255)
+  description String?       @db.VarChar(500)
+  image_url   String?       @db.VarChar(255)
+  created_at  DateTime?     @default(now()) @db.Timestamp(6)
+  updated_at  DateTime?     @default(now()) @db.Timestamp(6)
+  quote_items quote_items[]
+}
+
+model quote_items {
+  id                Int               @id @default(autoincrement())
+  product_id        Int
+  quantity          Int
+  quote_id          Int
+  created_at        DateTime?         @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?         @default(now()) @db.Timestamp(6)
+  products          products          @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  quote_submissions quote_submissions @relation(fields: [quote_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model quote_submissions {
+  id           Int           @id @default(autoincrement())
+  first_name   String        @db.VarChar(255)
+  last_name    String        @db.VarChar(255)
+  company      String        @db.VarChar(255)
+  email        String        @db.VarChar(255)
+  phone_number String        @db.VarChar(255)
+  read         Boolean?      @default(false)
+  created_at   DateTime?     @default(now()) @db.Timestamp(6)
+  updated_at   DateTime?     @default(now()) @db.Timestamp(6)
+  quote_items  quote_items[]
+}
