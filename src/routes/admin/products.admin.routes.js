@@ -72,6 +72,8 @@ router.delete('/products/:id', async (req, res) => {
             }
         });
 
+        prisma.$disconnect();
+
         return res.status(204).json();
     } catch (e) {
         return res.status(400).json(e);
