@@ -18,6 +18,7 @@
 	},
 	"homepage": "https://github.com/rileygrotenhuis/schmidt-riffer-metalcrafts#readme",
 	"dependencies": {
+		"@prisma/client": "^3.13.0",
 		"body-parser": "^1.20.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.0",
