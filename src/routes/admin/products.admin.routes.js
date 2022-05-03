@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { PrismaClient, Prisma } = require('@prisma/client');
+const { PrismaClient } = require('@prisma/client');
 
 router.post('/products', async (req, res) => {
     try {
